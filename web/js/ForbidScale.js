@@ -15,13 +15,15 @@
           var touch;
           touch = event.targetTouches[0];
           that.targetElement = that.getTargetElementFromEventTarget(event.target);
-          if (touch.identifier && touch.identifier === that.lastTouchIdentifier) {
-            event.cancelable && event.preventDefault();
-            return false
-          }
-          that.lastTouchIdentifier = touch.identifier;
-          if (event.timeStamp - that.lastTouchTime < that.tapDelay) {
-            event.cancelable && event.preventDefault();
+          if (!that.needsFocus(that.targetElement)) {
+            if (touch.identifier && touch.identifier === that.lastTouchIdentifier) {
+              event.cancelable && event.preventDefault();
+              return false
+            }
+            that.lastTouchIdentifier = touch.identifier;
+            if (event.timeStamp - that.lastTouchTime < that.tapDelay) {
+              event.cancelable && event.preventDefault();
+            }
           }
         },
         false
@@ -33,12 +35,12 @@
           if (that.needsFocus(that.targetElement)) {
             that.focus(that.targetElement);
             that.sendClick(that.targetElement, event);
+          } else {
             if (!that.needsClick(that.targetElement)) {
               event.preventDefault();
               that.sendClick(that.targetElement, event);
             }
           }
-
         },
         false
       );
