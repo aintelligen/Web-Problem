@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="../css/style.min.css">
+  <style>
+    body {
+      padding-top: 50px;
+    }
+
+    div {
+      padding-top: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <a id="clickA" href="#" class="btn waves-effect waves-light btn-primary">a标签</a>
+  </div>
+  <div>
+    <span id="clickDiv" class="btn waves-effect waves-light btn-primary">span标签</span>
+  </div>
+  <div>
+    <form target="hidden_frame" action="#">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Name">
+      </div>
+      <div class="form-group">
+        <textarea class="form-control" rows="3" placeholder="Message"></textarea>
+      </div>
+      <div class="form-group text-right">
+        <button type="submit" class="btn btn-primary btn-rounded">Submit Request</button>
+      </div>
+    </form>
+    <iframe name="hidden_frame" id="hidden_frame" style="display: none;" frameborder="0"></iframe>
+  </div>
+  <script src="../js/ForbidScale.js"></script>
+  <script>
+    ForbidScale.attach(document.body);
+  </script>
+</body>
+
+</html>
