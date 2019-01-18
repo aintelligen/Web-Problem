@@ -10,12 +10,16 @@
 
 <body>
   <div id="XSS"></div>
+  <div id="sXSS"></div>
   <script src="./xss.min.js"></script>
   <script>
     var xssHtml = '<script scr="https://cdn.bootcss.com/vue/2.5.21/vue.common.dev.js">' + '<' + '/script>';
+    var alterHtml = '<a href="#" onclick="alert(/xss/)">click me</a>';
 
     document.getElementById('XSS').innerHTML = filterXSS(xssHtml);
+    document.getElementById('sXSS').innerHTML = filterXSS(alterHtml);
     console.log(filterXSS(xssHtml))
+    console.log(filterXSS(alterHtml))
 
   </script>
 </body>
