@@ -8,4 +8,4 @@ XSS代码存储在服务端
 XSS防御措施  
 编码，过滤，校正
 
-XSS[https://jsxss.com/zh/index.html]
+[XSS](https://www.npmjs.com/package/xss)
