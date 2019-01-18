@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="XSS"></div>
+  <script src="./xss.min.js"></script>
+  <script>
+    var xssHtml = '<script scr="https://cdn.bootcss.com/vue/2.5.21/vue.common.dev.js">' + '<' + '/script>';
+
+    document.getElementById('XSS').innerHTML = filterXSS(xssHtml);
+    console.log(filterXSS(xssHtml))
+
+  </script>
+</body>
+
+</html>
