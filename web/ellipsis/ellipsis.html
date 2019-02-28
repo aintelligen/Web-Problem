@@ -1,0 +1,411 @@
+<html>
+
+<head>
+  <title>银行卡信息</title>
+  <meta http-equiv="Content-Language" content="zh-cn">
+  <link href="./adm.css" rel="stylesheet" type="text/css">
+  <style>
+    .copy_td_web {
+      word-break: break-all;
+      position: relative;
+    }
+
+    .box_json_web {
+      height: 85px;
+      overflow: hidden;
+    }
+
+    .opacy_div_web {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 10000;
+      width: 99.9%;
+      height: 99.9%;
+      background: rgba(0, 0, 0, 0.3);
+      font-size: 14px;
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .opacy_div_web span {
+      background: #ddd;
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .hover_display_web .opacy_div_web {
+      display: flex;
+    }
+  </style>
+</head>
+
+<body>
+  <form method="post" id="payLogForm" name="payLogForm" action="pay_log.php" onsubmit="return false;">
+    <input type="hidden" id="id" name="id" value="">
+    <input type="hidden" id="oper_type" name="oper_type" value="DEL">
+    <table class="table_nober" width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+      <tbody>
+        <tr>
+          <td class="f_bold f_right" nowrap="nowrap">
+            &nbsp;&nbsp;&nbsp;&nbsp;订单ID<input type="text" id="order_no" name="order_no" size="15" value="">
+            &nbsp;&nbsp;玩家账号<input type="text" id="user_id" name="user_id" size="15" value="">
+            &nbsp;&nbsp;支付名称<input type="text" id="pay_name" name="pay_name" size="15" value="">
+            &nbsp;&nbsp;二级通道<input type="text" id="channel_name" name="channel_name" size="15" value="">
+            &nbsp;&nbsp;日志类型
+            <select style="cursor: pointer" onchange="seachResult()" id="log_type" name="log_type">
+              <option value="-1" selected="selected">全部</option>
+              <option value="0">支付请求</option>
+              <option value="1">回调请求</option>
+            </select>
+            &nbsp;&nbsp;请求状态
+            <select style="cursor: pointer" onchange="seachResult()" id="req_status" name="req_status">
+              <option value="-1" selected="selected">全部</option>
+              <option value="0">待处理</option>
+              <option value="1">成功</option>
+              <option value="2">失败</option>
+            </select>
+
+            日志时间<input type="text" id="startDate" name="startDate" value="2019-02-11 13:13:11" size="17" style=""
+              class="Wdate" onfocus="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss'})">--&gt;<input type="text"
+              id="endDate" name="endDate" value="2019-02-27 17:13:11" size="17" style="" class="Wdate"
+              onfocus="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+            <script type="text/javascript">
+            </script>
+
+            &nbsp;&nbsp;
+            &nbsp;<input class="b_2" value="查询" type="button" onclick="refer()" id="save_btn" name="save_btn">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table id="myTabData" class="myTabData" align="center" border="0" cellspacing="0" cellpadding="0" width="100%"
+      style="table-layout:fixed;">
+      <tbody>
+        <tr align="center">
+          <th width="5%">订单ID</th>
+          <th width="5%">玩家账号</th>
+          <th width="5%">充值金额</th>
+          <th width="5%">支付名称</th>
+          <th width="5%">二级通道</th>
+          <th width="5%">日志类型</th>
+          <th width="20%">请求参数</th>
+          <th style="display:none"></th>
+          <th width="20%">响应结果</th>
+          <th style="display:none"></th>
+          <th width="20%">详细错误</th>
+          <th style="display:none"></th>
+          <th width="5%">请求状态</th>
+          <th width="5%">日志时间</th>
+        </tr>
+
+        <tr align="center" class="dh" style="">
+          <td>258</td>
+          <td>sasa</td>
+          <td>100.00</td>
+          <td>PP支付</td>
+          <td>支付宝扫码</td>
+          <td>回调请求</td>
+          <td class="copy_td_web">
+            <div class="opacy_div_web"><span>复制</span></div>
+            <div class="box after is-truncated box_json_web" class="" style="height:85px;" data-json='{"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+                                19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}'>
+              {"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+              19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}
+            </div>
+          </td>
+          <td class="copy_td_web">
+            <div class="opacy_div_web"><span>复制</span></div>
+            <div class="box after is-truncated box_json_web" class="" style="height:85px;" data-json='{"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+                      19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}'>
+              {"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+              19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}
+            </div>
+          </td>
+          <td class="copy_td_web">
+            <div class="opacy_div_web"><span>复制</span></div>
+            <div class="box after is-truncated box_json_web" class="" style="height:85px;" data-json='{"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+                                19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}'>
+              {"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+              19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}
+            </div>
+          </td>
+          <td>成功</td>
+          <td>2019-02-26 15:58:35</td>
+        </tr>
+        <tr align="center" class="dh" style="">
+          <td>258</td>
+          <td>sasa</td>
+          <td>100.00</td>
+          <td>PP支付</td>
+          <td>支付宝扫码</td>
+          <td>回调请求</td>
+          <td class="copy_td_web">
+            <div class="opacy_div_web"><span>复制</span></div>
+            <div class="box after is-truncated box_json_web" class="" style="height:85px;" data-json='{"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+                                19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}'>
+              {"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+              19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}
+            </div>
+          </td>
+          <td class="copy_td_web">
+            <div class="opacy_div_web"><span>复制</span></div>
+            <div class="box after is-truncated box_json_web" class="" style="height:85px;" data-json='{"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+                      19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}'>
+              {"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+              19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}
+            </div>
+          </td>
+          <td class="copy_td_web">
+            <div class="opacy_div_web"><span>复制</span></div>
+            <div class="box after is-truncated box_json_web" class="" style="height:85px;" data-json='{"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+                                19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}'>
+              {"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+              19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}
+            </div>
+          </td>
+          <td>成功</td>
+          <td>2019-02-26 15:58:35</td>
+        </tr>
+        <tr align="center" class="dh" style="">
+          <td>258</td>
+          <td>sasa</td>
+          <td>100.00</td>
+          <td>PP支付</td>
+          <td>支付宝扫码</td>
+          <td>回调请求</td>
+          <td class="copy_td_web">
+            <div class="opacy_div_web"><span>复制</span></div>
+            <div class="box after is-truncated box_json_web" class="" style="height:85px;" data-json='{"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+                                19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}'>
+              {"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+              19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}
+            </div>
+          </td>
+          <td class="copy_td_web">
+            <div class="opacy_div_web"><span>复制</span></div>
+            <div class="box after is-truncated box_json_web" class="" style="height:85px;" data-json='{"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+                      19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}'>
+              {"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+              19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}
+            </div>
+          </td>
+          <td class="copy_td_web">
+            <div class="opacy_div_web"><span>复制</span></div>
+            <div class="box after is-truncated box_json_web" class="" style="height:85px;" data-json='{"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+                                19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}'>
+              {"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+              19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}
+            </div>
+          </td>
+          <td>成功</td>
+          <td>2019-02-26 15:58:35</td>
+        </tr>
+        <tr align="center" class="dh" style="">
+          <td>258</td>
+          <td>sasa</td>
+          <td>100.00</td>
+          <td>PP支付</td>
+          <td>支付宝扫码</td>
+          <td>回调请求</td>
+          <td class="copy_td_web">
+            <div class="opacy_div_web"><span>复制</span></div>
+            <div class="box after is-truncated box_json_web" class="" style="height:85px;" data-json='{"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+                                19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}'>
+              {"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+              19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}
+            </div>
+          </td>
+          <td class="copy_td_web">
+            <div class="opacy_div_web"><span>复制</span></div>
+            <div class="box after is-truncated box_json_web" class="" style="height:85px;" data-json='{"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+                      19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}'>
+              {"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+              19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}
+            </div>
+          </td>
+          <td class="copy_td_web">
+            <div class="opacy_div_web"><span>复制</span></div>
+            <div class="box after is-truncated box_json_web" class="" style="height:85px;" data-json='{"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+                                19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}'>
+              {"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+              19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}
+            </div>
+          </td>
+          <td>成功</td>
+          <td>2019-02-26 15:58:35</td>
+        </tr>
+        <tr align="center" class="dh" style="">
+          <td>258</td>
+          <td>sasa</td>
+          <td>100.00</td>
+          <td>PP支付</td>
+          <td>支付宝扫码</td>
+          <td>回调请求</td>
+          <td class="copy_td_web">
+            <div class="opacy_div_web"><span>复制</span></div>
+            <div class="box after is-truncated box_json_web" class="" style="height:85px;" data-json='{"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+                                19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}'>
+              {"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381","payType":"1","amount":"1.00","pid":"200003","orderNo":"2019011520190115534807773406429184","qrcode":"alipays://platformapi/startapp?appId=20000067&url=http%3A%2F%2F47.52.100.234%3A8910%2Fppay%2Fuser%2Falibridgenowait%3FqCode%3DhfMwtnABolhmFTKltzCaPfjCyKmuscVT","payUrl":"http://47.52.100.234:8910/ppay/user/qOrder?qCode=hfMwtnABolhmFTKltzCaPfjCyKmuscVT","expireTime":"2019-01-15
+              19:00:09","totalFee":"0.02","account":"shibao9961@163.com"}}
+            </div>
+          </td>
+          <td class="copy_td_web">
+            <div class="opacy_div_web"><span>复制</span></div>
+            <div class="box after is-truncated box_json_web" class="" style="height:85px;">
+              {"code":"0","message":"SUCCESS","data":{"bizOrderNo":"48028381"
+            </div>
+          </td>
+          <td class="copy_td_web">
+            <div class="opacy_div_web"><span>复制</span></div>
+            <div class="box_json_web" data-json=''>
+              {"code":"0","message":"SUCCESS","data":{"bizOrderN</div>
+          </td>
+          <td>成功</td>
+          <td>2019-02-26 15:58:35</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </form>
+  <script type="text/javascript" src="./jquery-1.8.3.min.js"></script>
+  <script>
+
+    $(function () {
+      // 函数节流
+      function throttle(method, delay) {
+        var timer = null;
+        return function () {
+          var context = this, args = arguments;
+          clearTimeout(timer);
+          timer = setTimeout(function () {
+            method.apply(context, args);
+          }, delay);
+        }
+      }
+      //  初始化  参数：jsonBoxClass：显示数据div的类名，opactyBoxClass：显示阴影div的类名，hoverClass:鼠标经过td时加在td上的类名
+      function initEllipsis(jsonBoxClass, opactyBoxClass, hoverClass) {
+        var DisplayTid;
+        var divWrapper = $('<div id="init_Ellipsis_Div_Box"></div>');
+        divWrapper.css({
+          "position": "absolute",
+          "z-index": "-1",
+          "display": "none",
+          "word-break": "break-all"
+        })
+        // 显示溢出Ellipsis
+        $('.' + jsonBoxClass).each(function () {
+          var _that = $(this);
+          // 当前元素的data，高度，宽度
+          var height = _that.height(),
+            width = _that.width(),
+            allText = _that.html().replace(/\s+/g, ""),
+            lengthText = String(allText).length;
+          _that.attr({ "data-json": allText });
+          divWrapper.css({
+            "width": width
+          })
+          divWrapper.html(allText)
+          divWrapper.appendTo(_that);
+
+          var afterHtml = allText;
+          var first = true;
+          // 计算截取的是字节长度
+          setTimeout(function () {
+            computerHeight(divWrapper, afterHtml, height);
+            function computerHeight(wrapper, text, height) {
+              // 获取高度
+              wrapper.html(text)
+              var wrapheight = wrapper.height()
+              var num = wrapheight - height;
+              // 首次计算
+              if (first) {
+                lengthText = Math.ceil(height * lengthText / wrapheight) + Math.ceil(height * 0.35);
+                first = false
+              }
+              // 递归计算
+              lengthText = lengthText - 3;
+              if (num > 0) {
+                afterHtml = text.substr(0, lengthText) + '...';
+                computerHeight(wrapper, afterHtml, height)
+              } else {
+                _that.html(afterHtml)
+              }
+            }
+          }, 0)
+        });
+        // 显示复制
+        $('.' + jsonBoxClass).hover(
+          function () {
+            var that = $(this);
+            DisplayTid = setTimeout(function () {
+              $(this).closest("table").find("td").removeClass(hoverClass);
+              that.closest("td").addClass(hoverClass);
+            }, 100);
+          },
+          function () {
+            clearTimeout(DisplayTid)
+          }
+        );
+        // 隐藏复制
+        $("." + opactyBoxClass).hover(
+          function () {
+
+          },
+          function () {
+            $(this).closest("table").find("td").removeClass(hoverClass);
+            $("." + opactyBoxClass + ' span').html('复制');
+          }
+        )
+        // 点击复制
+        $("." + opactyBoxClass + ' span').on('click', function () {
+          var json = $(this).closest("td").find("." + jsonBoxClass).attr('data-json');
+          if (copyInit(json)) {
+            $(this).html('复制成功');
+          } else {
+            $(this).html('复制失败，请尝试换成chrome浏览器');
+          }
+        });
+      }
+      // 复制函数
+      function copyInit(value) {
+        var input;
+        if ($(".input_copy_textare").length > 0) {
+          input = $(".input_copy_textare");
+          input.val(value);
+        } else {
+          input = $('<input class="input_copy_textare"/>');
+          input.css({
+            'position': 'fixed',
+            'z-index': '-10',
+            'top': '-100px'
+          })
+          input.val(value);
+          $('body').append(input)
+        }
+        var currentFocus = document.activeElement;
+        input.focus();
+        input.select();
+        var successful = document.execCommand('copy', true);
+
+        currentFocus.focus();
+        if (successful) {
+          document.execCommand("copy");
+          return true;
+        } else {
+          console.log("不能使用这种方法复制内容");
+          return false;
+        }
+        document.body.removeChild(o);
+      }
+      // 初始化
+      initEllipsis("box_json_web", "opacy_div_web", "hover_display_web");
+    })
+  </script>
+
+</body>
+
+</html>
