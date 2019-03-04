@@ -1,6 +1,7 @@
 <html>
 
 <head>
+  <meta charset="UTF-8">
   <title>银行卡信息</title>
   <meta http-equiv="Content-Language" content="zh-cn">
   <link href="./adm.css" rel="stylesheet" type="text/css">
@@ -272,6 +273,7 @@
     </table>
   </form>
   <script type="text/javascript" src="./jquery-1.8.3.min.js"></script>
+  <script type="text/javascript" src="./clipboard.min.js"></script>
   <script>
 
     $(function () {
@@ -304,7 +306,9 @@
             width = _that.width(),
             allText = _that.html().replace(/\s+/g, ""),
             lengthText = String(allText).length;
-          _that.attr({ "data-json": allText });
+          _that.closest("td").find("." + opactyBoxClass).append(copyInit(allText))
+
+
           divWrapper.css({
             "width": width
           })
@@ -361,45 +365,32 @@
           }
         )
         // 点击复制
-        $("." + opactyBoxClass + ' span').on('click', function () {
-          var json = $(this).closest("td").find("." + jsonBoxClass).attr('data-json');
-          if (copyInit(json)) {
-            $(this).html('复制成功');
-          } else {
-            $(this).html('复制失败，请尝试换成chrome浏览器');
+        var clipboard = new ClipboardJS("." + opactyBoxClass + ' span', {
+          target: function (trigger) {
+            return trigger.nextElementSibling;
           }
         });
+        clipboard.on('success', function (e) {
+          $(e.trigger).html("复制成功")
+          e.clearSelection();
+        });
+        clipboard.on('error', function (e) {
+          $(e.trigger).html("复制失败，尝试换成IE/chrome浏览器")
+          e.clearSelection();
+        });
+
       }
       // 复制函数
       function copyInit(value) {
         var input;
-        if ($(".input_copy_textare").length > 0) {
-          input = $(".input_copy_textare");
-          input.val(value);
-        } else {
-          input = $('<input class="input_copy_textare"/>');
-          input.css({
-            'position': 'fixed',
-            'z-index': '-10',
-            'top': '-100px'
-          })
-          input.val(value);
-          $('body').append(input)
-        }
-        var currentFocus = document.activeElement;
-        input.focus();
-        input.select();
-        var successful = document.execCommand('copy', true);
-
-        currentFocus.focus();
-        if (successful) {
-          document.execCommand("copy");
-          return true;
-        } else {
-          console.log("不能使用这种方法复制内容");
-          return false;
-        }
-        document.body.removeChild(o);
+        input = $('<input class="input_copy_textare"/>');
+        input.css({
+          'position': 'fixed',
+          'z-index': '-10',
+          'top': '-100px'
+        })
+        input.val(value);
+        return input;
       }
       // 初始化
       initEllipsis("box_json_web", "opacy_div_web", "hover_display_web");
